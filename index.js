@@ -1,12 +1,15 @@
 // TODO: Include packages needed for this application
 const fs = require('fs');
 const inquire = require('inquirer')
-const writeReadme = (name, description, usage, license, credits, test, installation) => {
+const writeReadme = (name, description, usage, license, credits, test, installation, badgeLeft, badgeRight, badgeColor) => {
     return`
 # ${name}
 
 ## Description
 ${description}
+
+## Badge 
+![${badgeLeft} badge](https://img.shields.io/badge/${badgeLeft}-${badgeRight}-${badgeColor}.svg)
 
 ## Table of Contents
 
@@ -70,10 +73,35 @@ inquire.prompt ([
             type: 'input',
             message: 'What tests can users run on your project, if any?',
             name: 'test'
+        },
+        {
+            type: 'input',
+            message: 'Create a badge. What is on the left side?',
+            name: 'badgeLeft'
+        },
+        {
+            type:'input',
+            message: 'What is on the right side of the badge?',
+            name: 'badgeRight'
+        },
+        {
+            type: 'list',
+            message: 'Which color would you like your badge to be?',
+            name: 'badgeColor',
+            choices: ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
         }
     ])
     .then(response => {
-        fs.writeFile('GenREADME.md', writeReadme(response.name, response.description, response.usage, response.license, response.credits, response.test, response.installation), (err)=> {
+        fs.writeFile('GenREADME.md', writeReadme(response.name, 
+            response.description, 
+            response.usage, 
+            response.license, 
+            response.credits, 
+            response.test, 
+            response.installation,
+            response.badgeLeft,
+            response.badgeRight,
+            response.badgeColor), (err)=> {
             if (err) {
                 console.log("error");
             } else {
